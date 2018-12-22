@@ -23,7 +23,7 @@ class UIData {
   static const String dashboardTwoRoute = "/Dashboard 2";
 
   //strings
-  static const String appName = "Flutter UIKit";
+  static const String appName = "Nintendo Fans";
 
   //fonts
   static const String quickFont = "Quicksand";
@@ -71,8 +71,8 @@ class UIData {
     // new Color.fromRGBO(103, 218, 255, 1.0),
     // new Color.fromRGBO(3, 169, 244, 1.0),
     // new Color.fromRGBO(0, 122, 193, 1.0),
-    Colors.blueGrey.shade800,
-    Colors.black87,
+    Colors.red[400],
+    Colors.orange,
   ];
   static List<Color> kitGradients2 = [Colors.cyan.shade600, Colors.blue.shade900];
 
