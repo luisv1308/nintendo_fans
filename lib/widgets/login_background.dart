@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_uikit/ui/tools/arc_clipper.dart';
-import 'package:flutter_uikit/utils/uidata.dart';
+import 'package:nintendo_fans/tools/arc_clipper.dart';
+import 'package:nintendo_fans/utils/uidata.dart';
 
 class LoginBackground extends StatelessWidget {
   final showIcon;

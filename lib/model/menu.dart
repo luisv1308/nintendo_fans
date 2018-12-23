@@ -4,9 +4,9 @@ class Menu {
   String title;
   IconData icon;
   String image;
-  List<String> items;
+  String url;
   BuildContext context;
   Color menuColor;
 
-  Menu({this.title, this.icon, this.image, this.items, this.context, this.menuColor = Colors.black});
+  Menu({this.title, this.icon, this.image, this.url, this.context, this.menuColor = Colors.black});
 }

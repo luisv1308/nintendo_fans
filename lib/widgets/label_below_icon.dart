@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_uikit/utils/uidata.dart';
+import 'package:nintendo_fans/utils/uidata.dart';
 
 class LabelBelowIcon extends StatelessWidget {
   final label;
@@ -10,14 +10,7 @@ class LabelBelowIcon extends StatelessWidget {
   final isCircleEnabled;
   final betweenHeight;
 
-  LabelBelowIcon(
-      {this.label,
-      this.icon,
-      this.onPressed,
-      this.iconColor = Colors.white,
-      this.circleColor,
-      this.isCircleEnabled = true,
-      this.betweenHeight = 5.0});
+  LabelBelowIcon({this.label, this.icon, this.onPressed, this.iconColor = Colors.white, this.circleColor, this.isCircleEnabled = true, this.betweenHeight = 5.0});
   @override
   Widget build(BuildContext context) {
     return InkWell(
