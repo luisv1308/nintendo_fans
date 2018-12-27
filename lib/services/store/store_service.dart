@@ -1,0 +1,28 @@
+import 'dart:async';
+
+import 'package:nintendo_fans/model/store.dart';
+import 'package:nintendo_fans/services/abstract/i_store_service.dart';
+import 'package:nintendo_fans/services/network_service.dart';
+import 'package:nintendo_fans/services/network_service_response.dart';
+import 'package:nintendo_fans/services/restclient.dart';
+
+class StoreService extends NetworkService implements IStoreService {
+  static const _NewsUrl = "http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames";
+  // static const _kUserOtpLogin = "/userotplogin";
+
+  StoreService(RestClient rest) : super(rest);
+
+  @override
+  Future<NetworkServiceResponse<List<dynamic>>> allGames() async {
+    var result = await rest.getAsync<List<dynamic>>(_NewsUrl);
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+
+      return new NetworkServiceResponse(
+        content: res,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+  }
+}

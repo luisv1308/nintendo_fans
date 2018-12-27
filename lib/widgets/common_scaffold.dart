@@ -71,7 +71,7 @@ class CommonScaffold extends StatelessWidget {
       backgroundColor: backGroundColor != null ? backGroundColor : null,
       appBar: AppBar(
         elevation: elevation,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.red[400],
         title: Text(appTitle),
         actions: <Widget>[
           SizedBox(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_uikit/services/network_service_response.dart';
-import 'package:flutter_uikit/utils/uidata.dart';
+import 'package:nintendo_fans/services/network_service_response.dart';
+import 'package:nintendo_fans/utils/uidata.dart';
 
 fetchApiResult(BuildContext context, NetworkServiceResponse snapshot) {
   showDialog(
@@ -41,8 +41,7 @@ showSuccess(BuildContext context, String message, IconData icon) {
                     ),
                     Text(
                       message,
-                      style: TextStyle(
-                          fontFamily: UIData.ralewayFont, color: Colors.white),
+                      style: TextStyle(fontFamily: UIData.ralewayFont, color: Colors.white),
                     )
                   ],
                 ),

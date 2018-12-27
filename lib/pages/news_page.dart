@@ -68,7 +68,7 @@ class NewsPage extends StatelessWidget {
   //post cards
   Widget postCard(BuildContext context, News news) {
     return Card(
-      color: Colors.black,
+      color: Colors.orange[200],
       elevation: 2.0,
       child: Column(
         children: <Widget>[
@@ -78,8 +78,9 @@ class NewsPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
-            child: Text(news.title, style: TextStyle(fontWeight: FontWeight.normal, fontFamily: UIData.ralewayFont, fontSize: 16.0)),
+            child: Text(news.title, style: TextStyle(fontWeight: FontWeight.normal, fontFamily: UIData.ralewayFont, fontSize: 20.0, color: Colors.black)),
           ),
+          CommonDivider(),
           InkWell(
             // onTap: () async {
             //   var url = news.link;
@@ -107,8 +108,10 @@ class NewsPage extends StatelessWidget {
                   fit: BoxFit.cover,
                 )
               : Container(),
+          // news.thumbnail != null ? Container() : CommonDivider(),
+          // actionColumn(news),
           news.thumbnail != null ? Container() : CommonDivider(),
-          actionColumn(news),
+          Container(),
         ],
       ),
     );
@@ -145,8 +148,8 @@ class NewsPage extends StatelessWidget {
         title: Text("Feed"),
         forceElevated: true,
         pinned: true,
-        floating: true,
-        bottom: bottomBar(),
+        floating: false,
+        // bottom: bottomBar(),
       );
 
   Widget bodyList(List<News> news) => SliverList(

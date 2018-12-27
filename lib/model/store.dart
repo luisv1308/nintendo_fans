@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:nintendo_fans/model/game.dart';
 
-class CreateStoreResponse {
-  String status;
-  CreateStoreResponse({this.status});
+// class CreateStoreResponse {
+//   String status;
+//   CreateStoreResponse({this.status});
 
-  CreateStoreResponse.fromJson(Map<String, dynamic> json) : status = json['status'];
-}
+//   CreateStoreResponse.fromJson(Map<String, dynamic> json) : status = json['status'];
+// }
 
 class StoreResponse {
   String status;
-  StoreData data;
+  Game data;
   StoreResponse({this.status, this.data});
 
   StoreResponse.fromJson(Map<String, dynamic> json)
       : status = json['status'],
-        data = StoreData.fromJson(json['data']);
+        data = Game.fromJson(json['data']);
 }
 
 class StoreData {

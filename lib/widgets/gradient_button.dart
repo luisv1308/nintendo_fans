@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_uikit/utils/uidata.dart';
+import 'package:nintendo_fans/utils/uidata.dart';
 
 class GradientButton extends StatelessWidget {
   final GestureTapCallback onPressed;
@@ -27,10 +27,7 @@ class GradientButton extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20.0),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 20.0),
             ),
           ),
         ),

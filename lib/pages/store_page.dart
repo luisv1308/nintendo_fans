@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nintendo_fans/logic/block/product_block.dart';
-import 'package:nintendo_fans/model/product.dart';
+import 'package:nintendo_fans/model/game.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:nintendo_fans/widgets/common_scaffold.dart';
 
 class StorePage extends StatelessWidget {
@@ -8,13 +9,14 @@ class StorePage extends StatelessWidget {
   BuildContext _context;
 
   //stack1
-  Widget imageStack(String img) => Image.network(
-        img,
+  Widget imageStack(String img) => FadeInImage.memoryNetwork(
+        image: img,
+        placeholder: kTransparentImage,
         fit: BoxFit.cover,
       );
 
   //stack2
-  Widget descStack(Product product) => Positioned(
+  Widget descStack(Game product) => Positioned(
         bottom: 0.0,
         left: 0.0,
         right: 0.0,
@@ -27,13 +29,13 @@ class StorePage extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    product.name,
+                    product.title,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                Text(product.price, style: TextStyle(color: Colors.yellow, fontSize: 18.0, fontWeight: FontWeight.bold))
+                product.eshopPrice.toString() != "0" ? Text("\$ ${product.eshopPrice.toString()}", style: TextStyle(color: Colors.yellow, fontSize: 18.0, fontWeight: FontWeight.bold)) : Text("N/A")
               ],
             ),
           ),
@@ -66,7 +68,7 @@ class StorePage extends StatelessWidget {
         ),
       );
 
-  Widget productGrid(List<Product> products) => GridView.count(
+  Widget productGrid(List<Game> products) => GridView.count(
         crossAxisCount: MediaQuery.of(_context).orientation == Orientation.portrait ? 2 : 3,
         shrinkWrap: true,
         children: products
@@ -83,7 +85,7 @@ class StorePage extends StatelessWidget {
                         children: <Widget>[
                           imageStack(product.image),
                           descStack(product),
-                          ratingStack(product.rating),
+                          ratingStack(4.00),
                         ],
                       ),
                     ),
@@ -94,7 +96,7 @@ class StorePage extends StatelessWidget {
 
   Widget bodyData() {
     ProductBloc productBloc = ProductBloc();
-    return StreamBuilder<List<Product>>(
+    return StreamBuilder<List<Game>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           return snapshot.hasData ? productGrid(snapshot.data) : Center(child: CircularProgressIndicator());
