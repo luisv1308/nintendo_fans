@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:nintendo_fans/logic/viewmodel/cart_view_model.dart';
+import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/model/product.dart';
 
 class CartBloc {
@@ -12,7 +13,7 @@ class CartBloc {
   Sink<bool> get subtractItem => subtractionController.sink;
   Stream<int> get getCount => countController.stream;
 
-  CartBloc(Product p) {
+  CartBloc(Game p) {
     _cartViewModel = CartViewModel(product: p);
     additionalController.stream.listen(onAdd);
     subtractionController.stream.listen(onDelete);

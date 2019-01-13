@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/home_page.dart';
 import 'package:nintendo_fans/pages/login_page.dart';
 import 'package:nintendo_fans/pages/news_page.dart';
 import 'package:nintendo_fans/pages/notfound_page.dart';
+import 'package:nintendo_fans/pages/store_details_page.dart';
 import 'package:nintendo_fans/pages/store_page.dart';
 import 'package:nintendo_fans/utils/translations.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         UIData.homeRoute: (BuildContext context) => HomePage(),
         UIData.newsRoute: (BuildContext context) => NewsPage(),
         UIData.storeRoute: (BuildContext context) => StorePage(),
+        UIData.storeDetailsRoute: (BuildContext context) => new StoreDetailsPage(),
       },
       onUnknownRoute: (RouteSettings rs) => new MaterialPageRoute(
           builder: (context) => new NotFoundPage(

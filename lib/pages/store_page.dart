@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nintendo_fans/logic/block/product_block.dart';
 import 'package:nintendo_fans/model/game.dart';
+import 'package:nintendo_fans/pages/store_details_page.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
@@ -192,21 +193,28 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
       child: InkWell(
         splashColor: Colors.yellow,
         onDoubleTap: () => showSnackBar(),
-        child: Material(
-          clipBehavior: Clip.antiAlias,
-          elevation: 2.0,
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              imageStack(entry.image),
-              descStack(entry),
-              ratingStack(4.00),
-            ],
+        child: InkResponse(
+          onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StoreDetailsPage(game: entry),
+                ),
+              ),
+          child: Material(
+            clipBehavior: Clip.antiAlias,
+            elevation: 2.0,
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                imageStack(entry.image),
+                descStack(entry),
+                ratingStack(4.00),
+              ],
+            ),
           ),
         ),
       ),
     );
-    ;
   }
 
   @override
@@ -244,8 +252,6 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
         padding: EdgeInsets.all(15.0),
         itemBuilder: _itemBuilder,
         pageFuture: (pageIndex) async {
-          // return a Future that resolves to a list containing the page's data
-          // await Future.delayed(Duration(seconds: 1));
           await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
           if (pageIndex == 0) {
             return games;

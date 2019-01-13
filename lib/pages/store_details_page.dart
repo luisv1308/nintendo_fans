@@ -1,149 +1,52 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nintendo_fans/logic/block/cart_block.dart';
-import 'package:nintendo_fans/model/product.dart';
-import 'package:nintendo_fans/widgets/common_divider.dart';
-import 'package:nintendo_fans/widgets/custom_float.dart';
+import 'package:nintendo_fans/inherited/product_provider.dart';
+import 'package:nintendo_fans/logic/block/product_block.dart';
+import 'package:nintendo_fans/model/game.dart';
+import 'package:nintendo_fans/pages/store_details/shopping_widget.dart';
+import 'package:nintendo_fans/widgets/common_scaffold.dart';
+import 'package:nintendo_fans/widgets/login_background.dart';
 
-class ShoppingAction extends StatefulWidget {
-  final Product product;
-  ShoppingAction({this.product});
+class StoreDetailsPage extends StatelessWidget {
+  final _scaffoldState = GlobalKey<ScaffoldState>();
 
-  @override
-  ShoppingActionState createState() {
-    return new ShoppingActionState();
-  }
-}
+  final Game game;
 
-class ShoppingActionState extends State<ShoppingAction> {
-  String _value = "Cyan";
-  String _sizeValue = "M";
+  StoreDetailsPage({this.game});
 
-  Widget colorsCard() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Colors",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            children: widget.product.colors
-                .map((pc) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ChoiceChip(
-                          selectedColor: pc.color,
-                          label: Text(
-                            pc.colorName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          selected: _value == pc.colorName,
-                          onSelected: (selected) {
-                            setState(() {
-                              _value = selected ? pc.colorName : null;
-                            });
-                          }),
-                    ))
-                .toList(),
-          ),
-        ],
-      );
-
-  Widget sizesCard() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Sizes",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Wrap(
-            alignment: WrapAlignment.spaceEvenly,
-            children: widget.product.sizes
-                .map((pc) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ChoiceChip(
-                          selectedColor: Colors.yellow,
-                          label: Text(
-                            pc,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          selected: _sizeValue == pc,
-                          onSelected: (selected) {
-                            setState(() {
-                              _sizeValue = selected ? pc : null;
-                            });
-                          }),
-                    ))
-                .toList(),
-          ),
-        ],
-      );
-
-  Widget quantityCard() {
-    CartBloc cartBloc = CartBloc(widget.product);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          "Sizes",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CustomFloat(
-              isMini: true,
-              icon: FontAwesomeIcons.minus,
-              qrCallback: () => cartBloc.subtractionController.add(true),
-            ),
-            StreamBuilder<int>(
-              stream: cartBloc.getCount,
-              initialData: 0,
-              builder: (context, snapshot) => Text(
-                    snapshot.data.toString(),
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+  Widget bodyData(Game product) => StreamBuilder<List<Game>>(builder: (context, snapshot) {
+        return product != null
+            ? Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  LoginBackground(
+                    showIcon: false,
+                    image: product.image,
                   ),
-            ),
-            CustomFloat(
-              isMini: true,
-              icon: FontAwesomeIcons.plus,
-              qrCallback: () => cartBloc.additionalController.add(true),
-            ),
-          ],
-        )
-      ],
-    );
-  }
+                  ShoppingWidgets(product: product),
+                ],
+              )
+            : Center(child: CircularProgressIndicator());
+      });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        colorsCard(),
-        CommonDivider(),
-        SizedBox(
-          height: 5.0,
-        ),
-        sizesCard(),
-        CommonDivider(),
-        SizedBox(
-          height: 5.0,
-        ),
-        quantityCard(),
-        SizedBox(
-          height: 20.0,
-        ),
-      ],
+    ProductBloc productBloc = ProductBloc();
+    return ProductProvider(
+      productBloc: productBloc,
+      child: CommonScaffold(
+        backGroundColor: Colors.grey.shade100,
+        actionFirstIcon: null,
+        appTitle: "Product Detail",
+        showFAB: true,
+        scaffoldKey: _scaffoldState,
+        showDrawer: false,
+        centerDocked: true,
+        floatingIcon: Icons.add_shopping_cart,
+        bodyData: bodyData(this.game),
+        showBottomNav: true,
+      ),
     );
   }
 }
