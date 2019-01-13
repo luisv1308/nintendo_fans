@@ -33,7 +33,7 @@ class RestClient {
       var jsonResult = response.body;
       dynamic resultClass = jsonDecode(jsonResult);
 
-      return new MappedNetworkServiceResponse<T>(mappedResult: resultClass["data"], networkServiceResponse: new NetworkServiceResponse<T>(success: true));
+      return new MappedNetworkServiceResponse<T>(mappedResult: resultClass["data"], networkServiceResponse: new NetworkServiceResponse<T>(success: true), metaLinks: resultClass["links"]);
     } else {
       var errorResponse = response.body;
       return new MappedNetworkServiceResponse<T>(networkServiceResponse: new NetworkServiceResponse<T>(success: false, message: "(${response.statusCode}) ${errorResponse.toString()}"));
@@ -45,7 +45,7 @@ class RestClient {
       var result = response.body;
       dynamic resultClass = xml.parse(result);
 
-      return new MappedNetworkServiceResponse<T>(mappedResult: resultClass["data"], networkServiceResponse: new NetworkServiceResponse<T>(success: true));
+      return new MappedNetworkServiceResponse<T>(mappedResult: resultClass, networkServiceResponse: new NetworkServiceResponse<T>(success: true));
     } else {
       var errorResponse = response.body;
       return new MappedNetworkServiceResponse<T>(networkServiceResponse: new NetworkServiceResponse<T>(success: false, message: "(${response.statusCode}) ${errorResponse.toString()}"));

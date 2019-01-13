@@ -7,7 +7,8 @@ import 'package:nintendo_fans/services/network_service_response.dart';
 import 'package:nintendo_fans/services/restclient.dart';
 
 class StoreService extends NetworkService implements IStoreService {
-  static const _NewsUrl = "http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames";
+  static const _NewsUrl = "http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=1";
+  dynamic meta;
   // static const _kUserOtpLogin = "/userotplogin";
 
   StoreService(RestClient rest) : super(rest);
@@ -17,9 +18,26 @@ class StoreService extends NetworkService implements IStoreService {
     var result = await rest.getAsync<List<dynamic>>(_NewsUrl);
     if (result.mappedResult != null) {
       var res = result.mappedResult;
+      meta = result.metaLinks;
 
       return new NetworkServiceResponse(
         content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+  }
+
+  Future<NetworkServiceResponse<List<dynamic>>> pageGames(url) async {
+    var result = await rest.getAsync<List<dynamic>>(url);
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
         success: result.networkServiceResponse.success,
       );
     }

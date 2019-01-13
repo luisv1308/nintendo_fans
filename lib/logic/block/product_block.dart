@@ -9,18 +9,54 @@ class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
   final productController = StreamController<List<Game>>();
   Stream<List<Game>> get productItems => productController.stream;
+  List<Game> gamesItems = List();
   StoreService service = StoreService(RestClient());
+  dynamic meta;
 
-  ProductBloc() {
+  // ProductBloc() {
+  //   var res = service.allGames();
+  //   List<Game> gameList = List();
+  //   res.then((data) {
+  //     List<dynamic> games = data.content;
+  //     this.meta = data.meta;
+
+  //     games.forEach((game) {
+  //       Game newGame = Game.fromJson(game);
+  //       gameList.add(newGame);
+  //     });
+  //     productController.add(gameList);
+  //   });
+  // }
+
+  Future<List<Game>> getGameList() async {
     var res = service.allGames();
-    List<Game> gameList = List();
-    res.then((data) {
+
+    return res.then((data) {
       List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
       games.forEach((game) {
         Game newGame = Game.fromJson(game);
-        gameList.add(newGame);
+        gamesList.add(newGame);
       });
-      productController.add(gameList);
+
+      return gamesList;
+    });
+  }
+
+  Future<List<Game>> moreProducts(String url) async {
+    var res = service.pageGames(url);
+
+    return await res.then((data) {
+      List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
+      games.forEach((game) {
+        Game newGame = Game.fromJson(game);
+        gamesList.insert(0, newGame);
+      });
+
+      return gamesList;
     });
   }
 }
