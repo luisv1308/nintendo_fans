@@ -2,12 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/store_details/shopping_action.dart';
 import 'package:nintendo_fans/widgets/label_icon.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class ShoppingWidgets extends StatelessWidget {
-  Size deviceSize;
+class ShoppingWidgets extends StatefulWidget {
   final Game product;
 
   ShoppingWidgets({Key key, this.product}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new _ShoppingState(product: this.product);
+  }
+}
+
+class _ShoppingState extends State<ShoppingWidgets> {
+  Size deviceSize;
+  final Game product;
+  double rating = 0.0;
+
+  _ShoppingState({this.product});
+
   Widget mainCard() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
         child: Card(
@@ -19,7 +34,7 @@ class ShoppingWidgets extends StatelessWidget {
               children: <Widget>[
                 Text(
                   product.title,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0, color: Colors.green),
                 ),
                 SizedBox(
                   height: 10.0,
@@ -33,7 +48,7 @@ class ShoppingWidgets extends StatelessWidget {
                   children: <Widget>[
                     LabelIcon(
                       icon: Icons.star,
-                      iconColor: Colors.cyan,
+                      iconColor: Colors.green,
                       label: '4.00',
                     ),
                     Text(
@@ -95,6 +110,32 @@ class ShoppingWidgets extends StatelessWidget {
         ),
       );
 
+  Widget stars() => Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SmoothStarRating(
+                allowHalfRating: true,
+                onRatingChanged: (v) {
+                  rating = v;
+                  setState(() {});
+                },
+                starCount: 5,
+                rating: rating,
+                size: 40.0,
+                color: Colors.green,
+                borderColor: Colors.orange,
+              ),
+            ],
+          ),
+        ),
+      ));
+
   Widget actionCard() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
         child: Card(
@@ -112,6 +153,7 @@ class ShoppingWidgets extends StatelessWidget {
           ),
           mainCard(),
           imagesCard(),
+          stars(),
           descCard(),
           // actionCard(),
         ],
