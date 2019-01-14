@@ -92,10 +92,7 @@ class _ShoppingState extends State<ShoppingWidgets> {
               children: <Widget>[
                 Text(
                   "Description",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700, color: Colors.green),
                 ),
                 SizedBox(
                   height: 5.0,
@@ -136,12 +133,12 @@ class _ShoppingState extends State<ShoppingWidgets> {
         ),
       ));
 
-  Widget actionCard() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: Card(
-          child: Padding(padding: const EdgeInsets.all(8.0), child: ShoppingAction(product: product)),
-        ),
-      );
+  // Widget actionCard() => Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 18.0),
+  //       child: Card(
+  //         child: Padding(padding: const EdgeInsets.all(8.0), child: ShoppingAction(product: product)),
+  //       ),
+  //     );
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;

@@ -142,10 +142,10 @@ class NewsPage extends StatelessWidget {
           )));
 
   Widget appBar() => SliverAppBar(
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.orange[800],
         // textTheme: TextTheme(title: TextStyle(fontSize: 24.00, color: Colors.white)),
         elevation: 2.0,
-        title: Text("Feed"),
+        title: Text("Feed", style: TextStyle(color: Colors.white)),
         forceElevated: true,
         pinned: true,
         floating: false,

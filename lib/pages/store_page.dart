@@ -9,13 +9,13 @@ import 'package:nintendo_fans/widgets/custom_float.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 
 class StorePage extends StatelessWidget {
-  //stack1
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     // _context = context;
     return CommonScaffoldMutable(
-      // scaffoldKey: scaffoldKey,
+      scaffoldKey: scaffoldKey,
       appTitle: "Products",
       showDrawer: true,
       showFAB: false,
@@ -45,7 +45,7 @@ class CommonScaffoldMutable extends StatefulWidget {
 }
 
 class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
   BuildContext _context;
   ProductBloc productBloc = ProductBloc();
   Future<List<Game>> games;
@@ -129,12 +129,14 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
         ),
       );
 
-  void showSnackBar() {
-    scaffoldKey.currentState.showSnackBar(SnackBar(
+  void showSnackBar(String title) {
+    widget.scaffoldKey.currentState.showSnackBar(SnackBar(
+      backgroundColor: Colors.orange[800],
       content: Text(
-        "Added to cart.",
+        "You are now following $title!",
       ),
       action: SnackBarAction(
+        textColor: Colors.white,
         label: "Undo",
         onPressed: () {},
       ),
@@ -192,8 +194,8 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         splashColor: Colors.yellow,
-        onDoubleTap: () => showSnackBar(),
         child: InkResponse(
+          onDoubleTap: () => showSnackBar(entry.title),
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -225,8 +227,8 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
       backgroundColor: widget.backGroundColor != null ? widget.backGroundColor : null,
       appBar: AppBar(
         elevation: widget.elevation,
-        backgroundColor: Colors.red[400],
-        title: Text(widget.appTitle),
+        backgroundColor: Colors.orange[800],
+        title: Text(widget.appTitle, style: TextStyle(color: Colors.white)),
         actions: <Widget>[
           SizedBox(
             width: 5.0,

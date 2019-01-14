@@ -10,6 +10,7 @@ class CommonDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: Colors.orange[800]),
             accountName: Text(
               "Pawan Kumar",
             ),

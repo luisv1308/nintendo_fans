@@ -15,11 +15,12 @@ class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
       title: UIData.appName,
       theme: ThemeData(
+        // canvasColor: Colors.red[800],
         buttonTheme: new ButtonThemeData(buttonColor: Colors.orangeAccent, textTheme: ButtonTextTheme.primary),
         primaryColor: Colors.orangeAccent,
         brightness: Brightness.light,
         fontFamily: UIData.quickFont,
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.red,
         textTheme: new TextTheme(body1: new TextStyle(color: Colors.orange[800]), headline: TextStyle(color: Colors.white), title: TextStyle(color: Colors.white)),
       ),
       debugShowCheckedModeBanner: false,
