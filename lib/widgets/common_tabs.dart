@@ -3,7 +3,7 @@ import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
 import 'package:nintendo_fans/widgets/custom_float.dart';
 
-class CommonScaffold extends StatelessWidget {
+class CommonTabs extends StatelessWidget {
   final appTitle;
   final Widget bodyData;
   final showFAB;
@@ -16,7 +16,7 @@ class CommonScaffold extends StatelessWidget {
   final centerDocked;
   final elevation;
 
-  CommonScaffold({this.appTitle, this.bodyData, this.showFAB = false, this.showDrawer = false, this.backGroundColor, this.actionFirstIcon = Icons.search, this.scaffoldKey, this.showBottomNav = false, this.centerDocked = false, this.floatingIcon, this.elevation = 4.0});
+  CommonTabs({this.appTitle, this.bodyData, this.showFAB = false, this.showDrawer = false, this.backGroundColor, this.actionFirstIcon = Icons.search, this.scaffoldKey, this.showBottomNav = false, this.centerDocked = false, this.floatingIcon, this.elevation = 4.0});
 
   Widget myBottomBar() => BottomAppBar(
         clipBehavior: Clip.antiAlias,
@@ -48,26 +48,13 @@ class CommonScaffold extends StatelessWidget {
               SizedBox(
                 height: double.infinity,
                 child: new InkWell(
-                  onTap: () {
-                    print('jai');
-                  },
+                  onTap: () {},
                   radius: 10.0,
                   splashColor: Colors.yellow,
-                  child: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        new Text(
-                          "SHARE",
-                          style: new TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                        new SizedBox(
-                          width: 20.0,
-                        ),
-                        Icon(Icons.share),
-                      ],
-                    ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.share),
+                    alignment: Alignment(0.0, 0.0),
                   ),
                   // child: Center(
                   //   child: new Text(

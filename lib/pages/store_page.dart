@@ -16,10 +16,11 @@ class StorePage extends StatelessWidget {
     // _context = context;
     return CommonScaffoldMutable(
       scaffoldKey: scaffoldKey,
-      appTitle: "Products",
+      appTitle: "Games",
       showDrawer: true,
       showFAB: false,
-      actionFirstIcon: Icons.shopping_cart,
+      actionFirstIcon: Icons.search,
+      floatingIcon: Icons.thumb_up,
       // bodyData: bodyData(),
     );
   }
@@ -222,64 +223,101 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    return Scaffold(
-      key: widget.scaffoldKey != null ? widget.scaffoldKey : null,
-      backgroundColor: widget.backGroundColor != null ? widget.backGroundColor : null,
-      appBar: AppBar(
-        elevation: widget.elevation,
-        backgroundColor: Colors.orange[800],
-        title: Text(widget.appTitle, style: TextStyle(color: Colors.white)),
-        actions: <Widget>[
-          SizedBox(
-            width: 5.0,
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 5,
+        child: Scaffold(
+          key: widget.scaffoldKey != null ? widget.scaffoldKey : null,
+          backgroundColor: widget.backGroundColor != null ? widget.backGroundColor : null,
+          appBar: AppBar(
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(48.0),
+              child: Theme(
+                data: Theme.of(context).copyWith(accentColor: Colors.white),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  height: 48.0,
+                  alignment: Alignment.center,
+                  child: TabBar(
+                    isScrollable: true,
+                    tabs: [
+                      Text("All"),
+                      Text("New Releases"),
+                      Text("Sales"),
+                      Text("Coming Soon"),
+                      Text("Favourites"),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            elevation: widget.elevation,
+            backgroundColor: Colors.orange[800],
+            title: Text(widget.appTitle, style: TextStyle(color: Colors.white)),
+            actions: <Widget>[
+              SizedBox(
+                width: 5.0,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(widget.actionFirstIcon),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.more_vert),
+              )
+            ],
           ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(widget.actionFirstIcon),
+          drawer: widget.showDrawer ? CommonDrawer() : null,
+          // body: bodyData(),
+          body: TabBarView(
+            children: [
+              PagewiseGridView.count(
+                // key: new PageStorageKey('myListView'),
+                pageSize: 40,
+                crossAxisCount: (MediaQuery.of(_context).orientation == Orientation.portrait) ? 2 : 3,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: 0.888,
+                padding: EdgeInsets.all(15.0),
+                itemBuilder: _itemBuilder,
+                pageFuture: (pageIndex) async {
+                  await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+                  if (pageIndex == 0) {
+                    return games;
+                  } else {
+                    // end
+                    if (this.productBloc.meta['next'] == null) {
+                      throw 'I am an exception!';
+                    }
+                    return load();
+                  }
+                },
+              ),
+              Icon(Icons.directions_transit),
+              Icon(Icons.directions_bike),
+              Icon(Icons.directions_bike),
+              Icon(Icons.directions_bike),
+            ],
           ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.more_vert),
-          )
-        ],
+          floatingActionButton: widget.showFAB
+              ? CustomFloat(
+                  builder: widget.centerDocked
+                      ? Text(
+                          "5",
+                          style: TextStyle(color: Colors.white, fontSize: 10.0),
+                        )
+                      : null,
+                  icon: widget.floatingIcon,
+                  qrCallback: () {},
+                )
+              : null,
+          floatingActionButtonLocation: widget.centerDocked ? FloatingActionButtonLocation.centerDocked : FloatingActionButtonLocation.endFloat,
+          bottomNavigationBar: widget.showBottomNav ? myBottomBar() : null,
+        ),
       ),
-      drawer: widget.showDrawer ? CommonDrawer() : null,
-      // body: bodyData(),
-      body: PagewiseGridView.count(
-        pageSize: 40,
-        crossAxisCount: (MediaQuery.of(_context).orientation == Orientation.portrait) ? 2 : 3,
-        mainAxisSpacing: 8.0,
-        crossAxisSpacing: 8.0,
-        childAspectRatio: 0.888,
-        padding: EdgeInsets.all(15.0),
-        itemBuilder: _itemBuilder,
-        pageFuture: (pageIndex) async {
-          await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
-          if (pageIndex == 0) {
-            return games;
-          } else {
-            // end
-            if (this.productBloc.meta['next'] == null) {
-              throw 'I am an exception!';
-            }
-            return load();
-          }
-        },
-      ),
-      floatingActionButton: widget.showFAB
-          ? CustomFloat(
-              builder: widget.centerDocked
-                  ? Text(
-                      "5",
-                      style: TextStyle(color: Colors.white, fontSize: 10.0),
-                    )
-                  : null,
-              icon: widget.floatingIcon,
-              qrCallback: () {},
-            )
-          : null,
-      floatingActionButtonLocation: widget.centerDocked ? FloatingActionButtonLocation.centerDocked : FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: widget.showBottomNav ? myBottomBar() : null,
     );
   }
 }

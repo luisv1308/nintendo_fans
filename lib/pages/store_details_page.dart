@@ -38,7 +38,7 @@ class StoreDetailsPage extends StatelessWidget {
       child: CommonScaffold(
         backGroundColor: Colors.orange[200],
         actionFirstIcon: null,
-        appTitle: "Product Detail",
+        appTitle: this.game.title,
         showFAB: true,
         scaffoldKey: _scaffoldState,
         showDrawer: false,
