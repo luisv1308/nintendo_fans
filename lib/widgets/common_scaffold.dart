@@ -48,9 +48,7 @@ class CommonScaffold extends StatelessWidget {
               SizedBox(
                 height: double.infinity,
                 child: new InkWell(
-                  onTap: () {
-                    print('jai');
-                  },
+                  onTap: () {},
                   radius: 10.0,
                   splashColor: Colors.yellow,
                   child: Center(
