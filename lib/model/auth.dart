@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nintendo_fans/model/game.dart';
+import 'package:nintendo_fans/model/login.dart';
 
 // class CreateStoreResponse {
 //   String status;
@@ -10,12 +10,12 @@ import 'package:nintendo_fans/model/game.dart';
 
 class StoreResponse {
   String status;
-  Game data;
+  Login data;
   StoreResponse({this.status, this.data});
 
   StoreResponse.fromJson(Map<String, dynamic> json)
       : status = json['status'],
-        data = Game.fromJson(json['data']);
+        data = Login.fromJson(json['data']);
 }
 
 class StoreData {

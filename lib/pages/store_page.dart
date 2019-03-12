@@ -102,8 +102,8 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
       home: DefaultTabController(
         length: 5,
         child: Scaffold(
-          // key: widget.scaffoldKey != null ? widget.scaffoldKey : null,
-          key: new PageStorageKey('myListView'),
+          key: widget.scaffoldKey != null ? widget.scaffoldKey : null,
+          // key: new PageStorageKey('myListView'),
           backgroundColor: widget.backGroundColor != null ? widget.backGroundColor : null,
           appBar: AppBar(
             bottom: PreferredSize(

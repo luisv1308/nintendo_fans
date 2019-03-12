@@ -56,11 +56,7 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
             elevation: 2.0,
             child: Stack(
               fit: StackFit.expand,
-              children: <Widget>[
-                imageStack(entry.image),
-                descStack(entry),
-                ratingStack(4.00),
-              ],
+              children: <Widget>[imageStack(entry.image), descStack(entry), ratingStack(4.00), favoriteStack(entry.favourite)],
             ),
           ),
         ),
@@ -127,6 +123,27 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
         ),
       );
 
+  Widget favoriteStack(bool fav) => Positioned(
+        top: 0.0,
+        right: 0.0,
+        child: Container(
+          padding: EdgeInsets.all(4.0),
+          decoration: BoxDecoration(color: Colors.black.withOpacity(0.9), borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0))),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.favorite,
+                color: fav ? Colors.redAccent : Colors.transparent,
+                size: 10.0,
+              ),
+              SizedBox(
+                width: 2.0,
+              ),
+            ],
+          ),
+        ),
+      );
+
   void showSnackBar(String title) {
     widget.scaffoldKey.currentState.showSnackBar(SnackBar(
       backgroundColor: Colors.orange[800],
@@ -153,9 +170,6 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
       padding: EdgeInsets.all(15.0),
       itemBuilder: _itemBuilder,
       pageFuture: (pageIndex) async {
-        print(pageIndex);
-        print('test');
-        print(games);
         await Future.delayed(Duration(seconds: 0, milliseconds: 700));
         if (pageIndex == 0) {
           return games;

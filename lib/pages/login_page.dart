@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/utils/translations.dart';
+import 'package:nintendo_fans/services/login/login_service.dart';
+import 'package:nintendo_fans/services/restclientlogin.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  final LoginService service = LoginService(RestClientLogin());
+  final storage = new FlutterSecureStorage();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  State<StatefulWidget> createState() => new _CreateLogin();
+}
+
+class _CreateLogin extends State<LoginPage> {
+  TextEditingController _usernameController;
+  TextEditingController _passwordController;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _usernameController = new TextEditingController();
+    _passwordController = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: widget.scaffoldKey,
       backgroundColor: Colors.white,
-      body: Center(
-        child: loginBody(context),
+      body: Form(
+        key: _formKey,
+        child: Center(
+          child: loginBody(context),
+        ),
       ),
     );
   }
@@ -51,7 +79,13 @@ class LoginPage extends StatelessWidget {
           children: <Widget>[
             Container(
               padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a username';
+                  }
+                },
+                controller: _usernameController,
                 maxLines: 1,
                 decoration: InputDecoration(
                   hintText: "Enter your username",
@@ -61,7 +95,13 @@ class LoginPage extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                },
+                controller: _passwordController,
                 maxLines: 1,
                 obscureText: true,
                 decoration: InputDecoration(
@@ -84,7 +124,26 @@ class LoginPage extends StatelessWidget {
                   // style: TextStyle(color: Colors.white),
                 ),
                 // color: Colors.green,
-                onPressed: () {},
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    // If the form is valid, display a snackbar. In the real world, you'd
+                    // often want to call a server or save the information in a database
+                    widget.scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Processing Data')));
+                    var res = widget.service.login(_usernameController.text, _passwordController.text);
+                    res.then((data) async {
+                      print(data.message);
+                      widget.scaffoldKey.currentState.removeCurrentSnackBar();
+                      await widget.storage.write(key: 'access_token', value: data.content['access_token']);
+                      // print(data.content['access_token']);
+                      widget.service.getUser().then((dat) async {
+                        print(dat.content);
+                        await widget.storage.write(key: 'user_name', value: dat.content['name']);
+                        await widget.storage.write(key: 'user_email', value: dat.content['email']);
+                        Navigator.pushNamed(context, "/home");
+                      });
+                    });
+                  }
+                },
               ),
             ),
             SizedBox(

@@ -6,7 +6,7 @@ import 'package:nintendo_fans/model/post.dart';
 import 'package:nintendo_fans/services/network_service_response.dart';
 import 'package:nintendo_fans/services/news/news_service.dart';
 import 'package:nintendo_fans/services/restclient.dart';
-import 'package:xml/xml/nodes/document.dart';
+import 'package:xml/xml.dart';
 
 class PostBloc {
   final PostViewModel postViewModel = PostViewModel();
@@ -20,7 +20,6 @@ class PostBloc {
 
   PostBloc() {
     var res = service.fetchStoreResponse();
-    print('HAHA');
     List<News> newsList = List();
     res.then((data) {
       var items = data.content.findAllElements('item');

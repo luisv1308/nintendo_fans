@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:nintendo_fans/model/news.dart';
-import 'package:nintendo_fans/model/store.dart';
 import 'package:nintendo_fans/services/abstract/i_news_service.dart';
 import 'package:nintendo_fans/services/network_service.dart';
 import 'package:nintendo_fans/services/network_service_response.dart';

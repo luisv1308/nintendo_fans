@@ -7,6 +7,7 @@ class Game {
   String description;
   String publisher;
   String developer;
+  bool favourite;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -17,6 +18,7 @@ class Game {
         'salePrice': salePrice,
         'publisher': publisher,
         'developer': developer,
+        'favourite': favourite,
       };
 
   Game.fromJson(Map<String, dynamic> json)
@@ -27,5 +29,6 @@ class Game {
         eshopPrice = json['eshop_price'],
         publisher = json['publisher'],
         developer = json['developer'],
-        salePrice = json['sale_price'];
+        salePrice = json['sale_price'],
+        favourite = json['favourite'];
 }
