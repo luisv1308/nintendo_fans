@@ -4,6 +4,7 @@ import 'package:nintendo_fans/utils/translations.dart';
 import 'package:nintendo_fans/services/login/login_service.dart';
 import 'package:nintendo_fans/services/restclientlogin.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:nintendo_fans/utils/uidata.dart';
 
 class LoginPage extends StatefulWidget {
   final LoginService service = LoginService(RestClientLogin());
@@ -25,6 +26,9 @@ class _CreateLogin extends State<LoginPage> {
 
     _usernameController = new TextEditingController();
     _passwordController = new TextEditingController();
+    // for testing
+    _usernameController.text = 'l.velasquez1308@gmail.com';
+    _passwordController.text = 'testing';
   }
 
   @override
@@ -139,7 +143,7 @@ class _CreateLogin extends State<LoginPage> {
                         print(dat.content);
                         await widget.storage.write(key: 'user_name', value: dat.content['name']);
                         await widget.storage.write(key: 'user_email', value: dat.content['email']);
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, UIData.homeRoute);
                       });
                     });
                   }
