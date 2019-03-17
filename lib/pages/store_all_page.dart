@@ -51,7 +51,7 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
       child: InkWell(
         splashColor: Colors.yellow,
         child: InkResponse(
-          onDoubleTap: () => this.saveFavourite(entry, index),
+          onDoubleTap: () => this.favourite(entry, index),
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -151,27 +151,48 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
         ),
       );
 
+  void favourite(Game game, int index) {
+    if (game.favourite) {
+      deleteFavourite(game, index);
+    } else {
+      saveFavourite(game, index);
+    }
+  }
+
   void saveFavourite(Game game, int index) async {
     this.userID = await widget.storage.read(key: 'user_id');
     widget.service.userFavourite(this.userID, game.id.toString()).then((res) {
-      this.showSnackBar("You are now following " + game.title + "!");
+      this.showSnackBar("You are now following " + game.title + "!", game, index);
       setState(() {
         game.favourite = true;
       });
     });
   }
 
-  void showSnackBar(String message) async {
+  void deleteFavourite(Game game, int index) async {
+    this.userID = await widget.storage.read(key: 'user_id');
+    widget.service.userDeleteFavourite(this.userID, game.id.toString()).then((res) {
+      print(res.message);
+      this.showSnackBar("You are not more  following " + game.title + "!", game, index);
+      setState(() {
+        game.favourite = false;
+      });
+    });
+  }
+
+  void showSnackBar(String message, Game game, int index) async {
     widget.scaffoldKey.currentState.showSnackBar(SnackBar(
       backgroundColor: Colors.orange[800],
       content: Text(
         message,
       ),
-      action: SnackBarAction(
-        textColor: Colors.white,
-        label: "Undo",
-        onPressed: () {},
-      ),
+      // action: SnackBarAction(
+      //   textColor: Colors.white,
+      //   label: "Undo",
+      //   onPressed: () {
+      //     deleteFavourite(game, index);
+      //   },
+      // ),
     ));
   }
 

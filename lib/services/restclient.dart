@@ -32,8 +32,17 @@ class RestClient {
     return processResponse<T>(response);
   }
 
+  Future<MappedNetworkServiceResponse<T>> deleteAsync<T>(String resourcePath, dynamic data) async {
+    var content = json.encoder.convert(data);
+    final storage = new FlutterSecureStorage();
+    String access_token = await storage.read(key: 'access_token');
+    var headers = {"CONTENT_TYPE": 'application/json', "Authorization": "Bearer " + access_token, "X-HTTP-Method-Override": "DELETE"};
+    var response = await http.post(resourcePath, body: data, headers: headers);
+    return processResponse<T>(response);
+  }
+
   MappedNetworkServiceResponse<T> processResponse<T>(http.Response response) {
-    if (!((response.statusCode < 200) || (response.statusCode >= 300) || (response.body == null))) {
+    if (!((response.statusCode < 200) || (response.statusCode >= 300) || (response.body == null) || (response.body == ''))) {
       var jsonResult = response.body;
       var finalRes;
       var finalMeta;
