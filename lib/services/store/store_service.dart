@@ -41,4 +41,19 @@ class StoreService extends NetworkService implements IStoreService {
     }
     return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
   }
+
+  Future<NetworkServiceResponse<Map<String, dynamic>>> userFavourite(String userId, String gameId) async {
+    Map data = {'user_id': userId, 'game_id': gameId};
+    var result = await rest.postAsync<List<dynamic>>('http://phplaravel-175876-509694.cloudwaysapps.com/api/favourite-create', data);
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+  }
 }

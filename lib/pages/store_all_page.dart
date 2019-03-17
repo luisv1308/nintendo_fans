@@ -4,17 +4,24 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:nintendo_fans/logic/block/product_block.dart';
 import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/store_details_page.dart';
+import 'package:nintendo_fans/services/restclient.dart';
+import 'package:nintendo_fans/services/store/store_service.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StoreAllPage extends StatefulWidget {
   final scaffoldKey;
+  final storage = new FlutterSecureStorage();
+  final StoreService service = StoreService(RestClient());
   StoreAllPage(this.scaffoldKey);
+
   @override
   _StoreAllPageState createState() => _StoreAllPageState();
 }
 
 class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClientMixin<StoreAllPage> {
   var list = List();
+  var userID;
   Future<List<Game>> games;
   ProductBloc productBloc = ProductBloc();
 
@@ -26,7 +33,7 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
     super.initState();
   }
 
-  Future<List<dynamic>> load() {
+  Future<List<Game>> load() {
     if (productBloc.meta == null) {
       return games = productBloc.moreProducts('http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=2').then((res) {
         return res;
@@ -38,13 +45,13 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
     }
   }
 
-  Widget _itemBuilder(context, entry, _) {
+  Widget _itemBuilder(context, entry, index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         splashColor: Colors.yellow,
         child: InkResponse(
-          onDoubleTap: () => showSnackBar(entry.title),
+          onDoubleTap: () => this.saveFavourite(entry, index),
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -144,11 +151,21 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
         ),
       );
 
-  void showSnackBar(String title) {
+  void saveFavourite(Game game, int index) async {
+    this.userID = await widget.storage.read(key: 'user_id');
+    widget.service.userFavourite(this.userID, game.id.toString()).then((res) {
+      this.showSnackBar("You are now following " + game.title + "!");
+      setState(() {
+        game.favourite = true;
+      });
+    });
+  }
+
+  void showSnackBar(String message) async {
     widget.scaffoldKey.currentState.showSnackBar(SnackBar(
       backgroundColor: Colors.orange[800],
       content: Text(
-        "You are now following $title!",
+        message,
       ),
       action: SnackBarAction(
         textColor: Colors.white,

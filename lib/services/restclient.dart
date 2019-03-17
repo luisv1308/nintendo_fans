@@ -25,16 +25,27 @@ class RestClient {
 
   Future<MappedNetworkServiceResponse<T>> postAsync<T>(String resourcePath, dynamic data) async {
     var content = json.encoder.convert(data);
-    var response = await http.post(resourcePath, body: content, headers: headers);
+    final storage = new FlutterSecureStorage();
+    String access_token = await storage.read(key: 'access_token');
+    var headers = {"CONTENT_TYPE": 'application/json', "Authorization": "Bearer " + access_token};
+    var response = await http.post(resourcePath, body: data, headers: headers);
     return processResponse<T>(response);
   }
 
   MappedNetworkServiceResponse<T> processResponse<T>(http.Response response) {
     if (!((response.statusCode < 200) || (response.statusCode >= 300) || (response.body == null))) {
       var jsonResult = response.body;
+      var finalRes;
+      var finalMeta;
       dynamic resultClass = jsonDecode(jsonResult);
-
-      return new MappedNetworkServiceResponse<T>(mappedResult: resultClass["data"], networkServiceResponse: new NetworkServiceResponse<T>(success: true), metaLinks: resultClass["links"]);
+      if (resultClass.containsKey("data")) {
+        finalRes = resultClass["data"];
+        finalMeta = resultClass["links"];
+      } else {
+        finalRes = resultClass;
+        finalMeta = resultClass;
+      }
+      return new MappedNetworkServiceResponse<T>(mappedResult: finalRes, networkServiceResponse: new NetworkServiceResponse<T>(success: true), metaLinks: finalMeta);
     } else {
       var errorResponse = response.body;
       return new MappedNetworkServiceResponse<T>(networkServiceResponse: new NetworkServiceResponse<T>(success: false, message: "(${response.statusCode}) ${errorResponse.toString()}"));

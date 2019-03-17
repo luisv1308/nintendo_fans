@@ -143,7 +143,8 @@ class _CreateLogin extends State<LoginPage> {
                         print(dat.content);
                         await widget.storage.write(key: 'user_name', value: dat.content['name']);
                         await widget.storage.write(key: 'user_email', value: dat.content['email']);
-                        Navigator.pushNamed(context, UIData.homeRoute);
+                        await widget.storage.write(key: 'user_id', value: dat.content['id'].toString());
+                        Navigator.pushReplacementNamed(context, UIData.homeRoute);
                       });
                     });
                   }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nintendo_fans/logic/block/product_block.dart';
-import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/store_all_page.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
