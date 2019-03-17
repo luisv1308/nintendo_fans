@@ -135,12 +135,11 @@ class _CreateLogin extends State<LoginPage> {
                     widget.scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Processing Data')));
                     var res = widget.service.login(_usernameController.text, _passwordController.text);
                     res.then((data) async {
-                      print(data.message);
-                      widget.scaffoldKey.currentState.removeCurrentSnackBar();
+                      await widget.storage.deleteAll();
                       await widget.storage.write(key: 'access_token', value: data.content['access_token']);
                       // print(data.content['access_token']);
                       widget.service.getUser().then((dat) async {
-                        print(dat.content);
+                        widget.scaffoldKey.currentState.removeCurrentSnackBar();
                         await widget.storage.write(key: 'user_name', value: dat.content['name']);
                         await widget.storage.write(key: 'user_email', value: dat.content['email']);
                         await widget.storage.write(key: 'user_id', value: dat.content['id'].toString());

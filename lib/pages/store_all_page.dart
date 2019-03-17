@@ -35,10 +35,12 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
 
   Future<List<Game>> load() {
     if (productBloc.meta == null) {
-      return games = productBloc.moreProducts('http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=2').then((res) {
+      return games = productBloc.moreProducts('http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=1').then((res) {
         return res;
       });
     } else {
+      print('more games');
+      
       return games = productBloc.moreProducts(productBloc.meta['next']).then((res) {
         return res;
       });

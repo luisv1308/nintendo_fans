@@ -12,8 +12,9 @@ class RestClient {
 
   Future<MappedNetworkServiceResponse<T>> getAsync<T>(String resourcePath) async {
     final storage = new FlutterSecureStorage();
-    String access_token = await storage.read(key: 'access_token');
-    headers["Authorization"] += access_token;
+    String accessToken = await storage.read(key: 'access_token');
+    accessToken =accessToken == null ? '':accessToken;
+    var headers = {"Accept": 'application/json', "Authorization": "Bearer " + accessToken};
     var response = await http.get(resourcePath, headers: headers);
     return processResponse<T>(response);
   }
