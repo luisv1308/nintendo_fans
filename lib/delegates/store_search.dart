@@ -1,38 +1,27 @@
 import 'dart:async';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:nintendo_fans/logic/block/product_block.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:nintendo_fans/model/game.dart';
+import 'package:nintendo_fans/logic/block/product_block.dart';
 import 'package:nintendo_fans/pages/store_details_page.dart';
 import 'package:nintendo_fans/services/restclient.dart';
 import 'package:nintendo_fans/services/store/store_service.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class StoreAllPage extends StatefulWidget {
-  final scaffoldKey;
-  final storage = new FlutterSecureStorage();
-  final StoreService service = StoreService(RestClient());
-  Function onSearchAction;
-
-  StoreAllPage(this.scaffoldKey, this.onSearchAction);
-
-  @override
-  _StoreAllPageState createState() => _StoreAllPageState();
-}
-
-class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClientMixin<StoreAllPage> {
-  var list = List();
-  var userID;
+class StoreSearch extends SearchDelegate<Game> {
   Future<List<Game>> games;
   ProductBloc productBloc = ProductBloc();
+  final storage = new FlutterSecureStorage();
+  final StoreService service = StoreService(RestClient());
+  var userID;
 
-  @override
-  void initState() {
-    games = productBloc.getGameList().then((res) {
-      return res;
-    });
-    super.initState();
+  StoreSearch() {
+    // games = productBloc.getGameList().then((res) {
+    //   return res;
+    // });
   }
 
   Future<List<Game>> load() {
@@ -45,6 +34,87 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
         return res;
       });
     }
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    if (query.length < 3) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              "Search term must be longer than two letters.",
+            ),
+          )
+        ],
+      );
+    }
+    // TODO: implement buildResults
+    return PagewiseGridView.count(
+      // key: new PageStorageKey('myListView'),
+      pageSize: 40,
+      crossAxisCount: (MediaQuery.of(context).orientation == Orientation.portrait) ? 2 : 3,
+      mainAxisSpacing: 8.0,
+      crossAxisSpacing: 8.0,
+      childAspectRatio: 0.888,
+      padding: EdgeInsets.all(15.0),
+      itemBuilder: _itemBuilder,
+      pageFuture: (pageIndex) async {
+        await Future.delayed(Duration(seconds: 0, milliseconds: 700));
+        if (pageIndex == 0) {
+          Future<List<Game>> list2;
+          list2 = productBloc.getGameListQuery(query).then((res) {
+            return res;
+          });
+          return list2;
+        } else {
+          // end
+          if (this.productBloc.meta['next'] == null) {
+            throw 'I am an exception!';
+          }
+          return load();
+        }
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    return Column();
+  }
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    assert(context != null);
+    final ThemeData theme = Theme.of(context);
+    assert(theme != null);
+    return theme;
   }
 
   Widget _itemBuilder(context, entry, index) {
@@ -162,69 +232,39 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
   }
 
   void saveFavourite(Game game, int index) async {
-    this.userID = await widget.storage.read(key: 'user_id');
-    widget.service.userFavourite(this.userID, game.id.toString()).then((res) {
+    this.userID = await this.storage.read(key: 'user_id');
+    this.service.userFavourite(this.userID, game.id.toString()).then((res) {
       this.showSnackBar("You are now following " + game.title + "!", game, index);
-      setState(() {
-        game.favourite = true;
-      });
+      // setState(() {
+      //   game.favourite = true;
+      // });
     });
   }
 
   void deleteFavourite(Game game, int index) async {
-    this.userID = await widget.storage.read(key: 'user_id');
-    widget.service.userDeleteFavourite(this.userID, game.id.toString()).then((res) {
+    this.userID = await this.storage.read(key: 'user_id');
+    this.service.userDeleteFavourite(this.userID, game.id.toString()).then((res) {
       print(res.message);
       this.showSnackBar("You are not more  following " + game.title + "!", game, index);
-      setState(() {
-        game.favourite = false;
-      });
+      // setState(() {
+      //   game.favourite = false;
+      // });
     });
   }
 
   void showSnackBar(String message, Game game, int index) async {
-    widget.scaffoldKey.currentState.showSnackBar(SnackBar(
-      backgroundColor: Colors.orange[800],
-      content: Text(
-        message,
-      ),
-      // action: SnackBarAction(
-      //   textColor: Colors.white,
-      //   label: "Undo",
-      //   onPressed: () {
-      //     deleteFavourite(game, index);
-      //   },
-      // ),
-    ));
+    // this.scaffoldKey.currentState.showSnackBar(SnackBar(
+    //   backgroundColor: Colors.orange[800],
+    //   content: Text(
+    //     message,
+    //   ),
+    //   // action: SnackBarAction(
+    //   //   textColor: Colors.white,
+    //   //   label: "Undo",
+    //   //   onPressed: () {
+    //   //     deleteFavourite(game, index);
+    //   //   },
+    //   // ),
+    // ));
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return PagewiseGridView.count(
-      // key: new PageStorageKey('myListView'),
-      pageSize: 40,
-      crossAxisCount: (MediaQuery.of(context).orientation == Orientation.portrait) ? 2 : 3,
-      mainAxisSpacing: 8.0,
-      crossAxisSpacing: 8.0,
-      childAspectRatio: 0.888,
-      padding: EdgeInsets.all(15.0),
-      itemBuilder: _itemBuilder,
-      pageFuture: (pageIndex) async {
-        await Future.delayed(Duration(seconds: 0, milliseconds: 700));
-        if (pageIndex == 0) {
-          return games;
-        } else {
-          // end
-          if (this.productBloc.meta['next'] == null) {
-            throw 'I am an exception!';
-          }
-          return load();
-        }
-      },
-    );
-  }
-
-  // TODO: implement wantKeepAlive
-  @override
-  bool get wantKeepAlive => true;
 }

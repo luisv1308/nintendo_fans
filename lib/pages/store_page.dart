@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:nintendo_fans/delegates/store_search.dart';
+import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/store_all_page.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
@@ -42,6 +46,15 @@ class CommonScaffoldMutable extends StatefulWidget {
 }
 
 class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
+  Future<List<Game>> games;
+
+  void hungryBear(Future<List<Game>> games) {
+    setState(() {
+      this.games = games;
+      print('change');
+    });
+  }
+
   void initState() {
     super.initState();
     // list.addAll(List.generate(30, (v) => v));
@@ -135,7 +148,9 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
                 width: 5.0,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showSearch(context: context, delegate: StoreSearch());
+                },
                 icon: Icon(widget.actionFirstIcon),
               ),
               IconButton(
@@ -150,7 +165,9 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
             // physics: NeverScrollableScrollPhysics(),
             key: new PageStorageKey('myListView'),
             children: [
-              StoreAllPage(widget.scaffoldKey),
+              StoreAllPage(widget.scaffoldKey, (tete) {
+                hungryBear(tete);
+              }),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
               Icon(Icons.directions_bike),

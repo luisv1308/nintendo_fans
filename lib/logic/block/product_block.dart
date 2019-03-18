@@ -59,4 +59,22 @@ class ProductBloc {
       return gamesList;
     });
   }
+
+  Future<List<Game>> getGameListQuery(query) async {
+    var res = service.fullGames();
+
+    return res.then((data) {
+      List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
+      games.forEach((game) {
+        Game newGame = Game.fromJson(game);
+        if (newGame.title.toLowerCase().contains(query)) {
+          gamesList.add(newGame);
+        }
+      });
+
+      return gamesList;
+    });
+  }
 }

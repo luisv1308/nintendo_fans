@@ -27,6 +27,21 @@ class StoreService extends NetworkService implements IStoreService {
     return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
   }
 
+  Future<NetworkServiceResponse<List<dynamic>>> fullGames() async {
+    var result = await rest.getAsync<List<dynamic>>('http://phplaravel-175876-509694.cloudwaysapps.com/api/games');
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+  }
+
   Future<NetworkServiceResponse<List<dynamic>>> pageGames(url) async {
     var result = await rest.getAsync<List<dynamic>>(url);
     print(result.networkServiceResponse.message);
