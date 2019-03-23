@@ -84,6 +84,9 @@ class StoreSearch extends SearchDelegate<Game> {
       childAspectRatio: 0.888,
       padding: EdgeInsets.all(15.0),
       itemBuilder: _itemBuilder,
+      noItemsFoundBuilder: (context) {
+        return Text('No Items Found');
+      },
       pageFuture: (pageIndex) async {
         await Future.delayed(Duration(seconds: 0, milliseconds: 700));
         if (pageIndex == 0) {
@@ -123,7 +126,7 @@ class StoreSearch extends SearchDelegate<Game> {
       child: InkWell(
         splashColor: Colors.yellow,
         child: InkResponse(
-          onDoubleTap: () => this.favourite(entry, index),
+          // onDoubleTap: () => this.favourite(entry, index),
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -135,7 +138,11 @@ class StoreSearch extends SearchDelegate<Game> {
             elevation: 2.0,
             child: Stack(
               fit: StackFit.expand,
-              children: <Widget>[imageStack(entry.image), descStack(entry), ratingStack(4.00), favoriteStack(entry.favourite)],
+              children: <Widget>[
+                imageStack(entry.image),
+                descStack(entry),
+                ratingStack(4.00),
+              ],
             ),
           ),
         ),
@@ -236,7 +243,7 @@ class StoreSearch extends SearchDelegate<Game> {
     this.service.userFavourite(this.userID, game.id.toString()).then((res) {
       this.showSnackBar("You are now following " + game.title + "!", game, index);
       // setState(() {
-      //   game.favourite = true;
+      game.favourite = true;
       // });
     });
   }
@@ -247,7 +254,7 @@ class StoreSearch extends SearchDelegate<Game> {
       print(res.message);
       this.showSnackBar("You are not more  following " + game.title + "!", game, index);
       // setState(() {
-      //   game.favourite = false;
+      game.favourite = false;
       // });
     });
   }

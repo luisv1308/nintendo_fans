@@ -52,7 +52,7 @@ class _ShoppingState extends State<ShoppingWidgets> {
                       label: '4.00',
                     ),
                     Text(
-                      product.eshopPrice.toString(),
+                      '\$ ' + product.eshopPrice.toString(),
                       style: TextStyle(color: Colors.orange.shade800, fontWeight: FontWeight.w700, fontSize: 25.0),
                     )
                   ],
@@ -117,9 +117,10 @@ class _ShoppingState extends State<ShoppingWidgets> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SmoothStarRating(
-                allowHalfRating: true,
+                allowHalfRating: false,
                 onRatingChanged: (v) {
                   rating = v;
+                  print(rating);
                   setState(() {});
                 },
                 starCount: 5,

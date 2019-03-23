@@ -9,6 +9,8 @@ class Game {
   String developer;
   bool favourite;
 
+  Game();
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
