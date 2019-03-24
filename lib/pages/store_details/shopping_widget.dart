@@ -3,25 +3,49 @@ import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/store_details/shopping_action.dart';
 import 'package:nintendo_fans/widgets/label_icon.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:nintendo_fans/services/store/store_service.dart';
+import 'package:nintendo_fans/services/restclient.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 class ShoppingWidgets extends StatefulWidget {
   final Game product;
+  final StoreService service = StoreService(RestClient());
 
   ShoppingWidgets({Key key, this.product}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _ShoppingState(product: this.product);
+    return new _ShoppingState(this.product);
   }
 }
 
 class _ShoppingState extends State<ShoppingWidgets> {
   Size deviceSize;
-  final Game product;
-  double rating = 0.0;
+  Game product;
+  double yourRating = 0.0;
 
-  _ShoppingState({this.product});
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent) {
+    Navigator.pop(context);
+    return true;
+  }
+
+  _ShoppingState(Game product) {
+    this.product = product;
+    this.yourRating = product.yourRating;
+  }
 
   Widget mainCard() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -49,7 +73,7 @@ class _ShoppingState extends State<ShoppingWidgets> {
                     LabelIcon(
                       icon: Icons.star,
                       iconColor: Colors.green,
-                      label: '4.00',
+                      label: product.rating,
                     ),
                     Text(
                       '\$ ' + product.eshopPrice.toString(),
@@ -119,12 +143,16 @@ class _ShoppingState extends State<ShoppingWidgets> {
               SmoothStarRating(
                 allowHalfRating: false,
                 onRatingChanged: (v) {
-                  rating = v;
-                  print(rating);
-                  setState(() {});
+                  widget.service.userRating(product.id.toString(), v).then((res) {
+                    print(res.content['rating']);
+                    yourRating = v;
+                    product.rating = res.content['rating'];
+                    product.yourRating = yourRating;
+                    setState(() {});
+                  });
                 },
                 starCount: 5,
-                rating: rating,
+                rating: yourRating,
                 size: 40.0,
                 color: Colors.green,
                 borderColor: Colors.orange,

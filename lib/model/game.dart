@@ -8,6 +8,8 @@ class Game {
   String publisher;
   String developer;
   bool favourite;
+  String rating;
+  double yourRating;
 
   Game();
 
@@ -21,6 +23,8 @@ class Game {
         'publisher': publisher,
         'developer': developer,
         'favourite': favourite,
+        'rating': rating,
+        'yourRating': yourRating,
       };
 
   Game.fromJson(Map<String, dynamic> json)
@@ -32,5 +36,7 @@ class Game {
         publisher = json['publisher'],
         developer = json['developer'],
         salePrice = json['sale_price'],
-        favourite = json['favourite'];
+        favourite = json['favourite'],
+        rating = json['rating'],
+        yourRating = double.parse(json['your_rating']);
 }

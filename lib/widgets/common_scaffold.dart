@@ -36,7 +36,7 @@ class CommonScaffold extends StatelessWidget {
                   onTap: () {},
                   child: Center(
                     child: new Text(
-                      "ADD TO WISHLIST",
+                      "ADD TO FAVOURITES",
                       style: new TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),

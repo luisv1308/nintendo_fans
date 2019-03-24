@@ -47,15 +47,14 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
     }
   }
 
-  Widget _itemBuilder(context, entry, index) {
+  Widget _itemBuilder(context, Game entry, index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         splashColor: Colors.yellow,
         child: InkResponse(
           onDoubleTap: () => this.favourite(entry, index),
-          onTap: () => Navigator.push(
-                context,
+          onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => StoreDetailsPage(game: entry),
                 ),
@@ -65,7 +64,7 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
             elevation: 2.0,
             child: Stack(
               fit: StackFit.expand,
-              children: <Widget>[imageStack(entry.image), descStack(entry), ratingStack(4.00), favoriteStack(entry.favourite)],
+              children: <Widget>[imageStack(entry.image), descStack(entry), ratingStack(entry.rating), favoriteStack(entry.favourite)],
             ),
           ),
         ),
@@ -107,7 +106,7 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
       );
 
   //stack3
-  Widget ratingStack(double rating) => Positioned(
+  Widget ratingStack(String rating) => Positioned(
         top: 0.0,
         left: 0.0,
         child: Container(
@@ -124,7 +123,7 @@ class _StoreAllPageState extends State<StoreAllPage> with AutomaticKeepAliveClie
                 width: 2.0,
               ),
               Text(
-                rating.toString(),
+                rating,
                 style: TextStyle(color: Colors.white, fontSize: 10.0),
               )
             ],
