@@ -6,6 +6,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:nintendo_fans/services/store/store_service.dart';
 import 'package:nintendo_fans/services/restclient.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ShoppingWidgets extends StatefulWidget {
   final Game product;
@@ -98,7 +99,18 @@ class _ShoppingState extends State<ShoppingWidgets> {
               itemCount: 5,
               itemBuilder: (context, i) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.network(product.image),
+                    child: Hero(
+                        tag: "imageTag" + i.toString(),
+                        child: InkResponse(
+                            onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => HeroPhotoViewWrapper(
+                                          imageProvider: NetworkImage(product.image),
+                                          heroNumber: i.toString(),
+                                        ),
+                                  ),
+                                ),
+                            child: Image.network(product.image))),
                   ),
             ),
           ),
@@ -185,5 +197,32 @@ class _ShoppingState extends State<ShoppingWidgets> {
         ],
       ),
     );
+  }
+}
+
+class HeroPhotoViewWrapper extends StatelessWidget {
+  const HeroPhotoViewWrapper({this.imageProvider, this.heroNumber, this.loadingChild, this.backgroundDecoration, this.minScale, this.maxScale});
+
+  final ImageProvider imageProvider;
+  final Widget loadingChild;
+  final Decoration backgroundDecoration;
+  final dynamic minScale;
+  final dynamic maxScale;
+  final String heroNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        constraints: BoxConstraints.expand(
+          height: MediaQuery.of(context).size.height,
+        ),
+        child: PhotoView(
+          imageProvider: imageProvider,
+          loadingChild: loadingChild,
+          backgroundDecoration: backgroundDecoration,
+          minScale: minScale,
+          maxScale: maxScale,
+          heroTag: "someTag" + this.heroNumber,
+        ));
   }
 }

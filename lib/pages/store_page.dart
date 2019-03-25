@@ -51,7 +51,6 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
   void hungryBear(Future<List<Game>> games) {
     setState(() {
       this.games = games;
-      print('change');
     });
   }
 
@@ -165,9 +164,7 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
             // physics: NeverScrollableScrollPhysics(),
             key: new PageStorageKey('myListView'),
             children: [
-              StoreAllPage(widget.scaffoldKey, (tete) {
-                hungryBear(tete);
-              }),
+              StoreAllPage(widget.scaffoldKey),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
               Icon(Icons.directions_bike),

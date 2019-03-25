@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
 import 'package:nintendo_fans/widgets/custom_float.dart';
+import 'package:share/share.dart';
 
 class CommonScaffold extends StatelessWidget {
   final appTitle;
@@ -15,10 +17,11 @@ class CommonScaffold extends StatelessWidget {
   final floatingIcon;
   final centerDocked;
   final elevation;
+  final Game game;
 
-  CommonScaffold({this.appTitle, this.bodyData, this.showFAB = false, this.showDrawer = false, this.backGroundColor, this.actionFirstIcon = Icons.search, this.scaffoldKey, this.showBottomNav = false, this.centerDocked = false, this.floatingIcon, this.elevation = 4.0});
+  CommonScaffold({this.appTitle, this.bodyData, this.showFAB = false, this.showDrawer = false, this.backGroundColor, this.actionFirstIcon = Icons.search, this.scaffoldKey, this.showBottomNav = false, this.centerDocked = false, this.floatingIcon, this.elevation = 4.0, this.game});
 
-  Widget myBottomBar() => BottomAppBar(
+  Widget myBottomBar(BuildContext context) => BottomAppBar(
         clipBehavior: Clip.antiAlias,
         shape: CircularNotchedRectangle(),
         child: Ink(
@@ -48,7 +51,10 @@ class CommonScaffold extends StatelessWidget {
               SizedBox(
                 height: double.infinity,
                 child: new InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final RenderBox box = context.findRenderObject();
+                    Share.share('Check ${this.game.title} Nintendo Switch! https://www.nintendo.com/games/detail/${this.game.slug}');
+                  },
                   radius: 10.0,
                   splashColor: Colors.yellow,
                   child: Center(
@@ -118,7 +124,7 @@ class CommonScaffold extends StatelessWidget {
       //       )
       //     : null,
       // floatingActionButtonLocation: centerDocked ? FloatingActionButtonLocation.centerDocked : FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: showBottomNav ? myBottomBar() : null,
+      bottomNavigationBar: showBottomNav ? myBottomBar(context) : null,
     );
   }
 }

@@ -168,6 +168,7 @@ class NewsPage extends StatelessWidget {
         builder: (context, snapshot) {
           return snapshot.hasData
               ? CustomScrollView(
+                  scrollDirection: Axis.vertical,
                   slivers: <Widget>[
                     appBar(),
                     bodyList(snapshot.data),

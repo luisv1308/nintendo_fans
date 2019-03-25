@@ -46,6 +46,7 @@ class StoreDetailsPage extends StatelessWidget {
         floatingIcon: Icons.add_shopping_cart,
         bodyData: bodyData(this.game),
         showBottomNav: true,
+        game: game,
       ),
     );
   }

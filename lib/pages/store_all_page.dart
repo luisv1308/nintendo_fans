@@ -13,9 +13,8 @@ class StoreAllPage extends StatefulWidget {
   final scaffoldKey;
   final storage = new FlutterSecureStorage();
   final StoreService service = StoreService(RestClient());
-  Function onSearchAction;
 
-  StoreAllPage(this.scaffoldKey, this.onSearchAction);
+  StoreAllPage(this.scaffoldKey);
 
   @override
   _StoreAllPageState createState() => _StoreAllPageState();
