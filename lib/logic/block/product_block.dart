@@ -44,6 +44,70 @@ class ProductBloc {
     });
   }
 
+  Future<List<Game>> getNewReleasesList() async {
+    var res = service.newGames();
+
+    return res.then((data) {
+      List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
+      games.forEach((game) {
+        Game newGame = Game.fromJson(game);
+        gamesList.add(newGame);
+      });
+
+      return gamesList;
+    });
+  }
+
+  Future<List<Game>> getSalesList() async {
+    var res = service.saleGames();
+
+    return res.then((data) {
+      List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
+      games.forEach((game) {
+        Game newGame = Game.fromJson(game);
+        gamesList.add(newGame);
+      });
+
+      return gamesList;
+    });
+  }
+
+  Future<List<Game>> getComingSoonList() async {
+    var res = service.comingSoonGames();
+
+    return res.then((data) {
+      List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
+      games.forEach((game) {
+        Game newGame = Game.fromJson(game);
+        gamesList.add(newGame);
+      });
+
+      return gamesList;
+    });
+  }
+
+  Future<List<Game>> getFavouritesList() async {
+    var res = service.favourites();
+
+    return res.then((data) {
+      List<dynamic> games = data.content;
+      List<Game> gamesList = List();
+      this.meta = data.meta;
+      games.forEach((game) {
+        Game newGame = Game.fromJson(game);
+        gamesList.add(newGame);
+      });
+
+      return gamesList;
+    });
+  }
+
   Future<List<Game>> moreProducts(String url) async {
     var res = service.pageGames(url);
 

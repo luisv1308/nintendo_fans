@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:nintendo_fans/delegates/store_search.dart';
 import 'package:nintendo_fans/model/game.dart';
 import 'package:nintendo_fans/pages/store_all_page.dart';
+import 'package:nintendo_fans/pages/store_coming_soon_page.dart';
+import 'package:nintendo_fans/pages/store_favourites_page.dart';
+import 'package:nintendo_fans/pages/store_new_releases_page.dart';
+import 'package:nintendo_fans/pages/store_sales_page.dart';
 import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
 import 'package:nintendo_fans/widgets/custom_float.dart';
@@ -39,7 +43,18 @@ class CommonScaffoldMutable extends StatefulWidget {
   final centerDocked;
   final elevation;
 
-  CommonScaffoldMutable({this.appTitle, this.bodyData, this.showFAB = false, this.showDrawer = false, this.backGroundColor, this.actionFirstIcon = Icons.search, this.scaffoldKey, this.showBottomNav = false, this.centerDocked = false, this.floatingIcon, this.elevation = 4.0});
+  CommonScaffoldMutable(
+      {this.appTitle,
+      this.bodyData,
+      this.showFAB = false,
+      this.showDrawer = false,
+      this.backGroundColor,
+      this.actionFirstIcon = Icons.search,
+      this.scaffoldKey,
+      this.showBottomNav = false,
+      this.centerDocked = false,
+      this.floatingIcon,
+      this.elevation = 4.0});
 
   @override
   _MyCommonScaffoldState createState() => new _MyCommonScaffoldState();
@@ -64,7 +79,8 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
         shape: CircularNotchedRectangle(),
         child: Ink(
           height: 50.0,
-          decoration: new BoxDecoration(gradient: new LinearGradient(colors: UIData.kitGradients)),
+          decoration: new BoxDecoration(
+              gradient: new LinearGradient(colors: UIData.kitGradients)),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +94,10 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
                   child: Center(
                     child: new Text(
                       "ADD TO WISHLIST",
-                      style: new TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: new TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -95,7 +114,10 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
                   child: Center(
                     child: new Text(
                       "ORDER PAGE",
-                      style: new TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: new TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -114,7 +136,8 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
         child: Scaffold(
           key: widget.scaffoldKey != null ? widget.scaffoldKey : null,
           // key: new PageStorageKey('myListView'),
-          backgroundColor: widget.backGroundColor != null ? widget.backGroundColor : null,
+          backgroundColor:
+              widget.backGroundColor != null ? widget.backGroundColor : null,
           appBar: AppBar(
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(48.0),
@@ -165,10 +188,10 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
             key: new PageStorageKey('myListView'),
             children: [
               StoreAllPage(widget.scaffoldKey),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
-              Icon(Icons.directions_bike),
-              Icon(Icons.directions_bike),
+              StoreNewReleasesPage(widget.scaffoldKey),
+              StoreSalesPage(widget.scaffoldKey),
+              StoreComingSoonPage(widget.scaffoldKey),
+              StoreFvaouritesPage(widget.scaffoldKey),
             ],
           ),
           floatingActionButton: widget.showFAB
@@ -183,7 +206,9 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
                   qrCallback: () {},
                 )
               : null,
-          floatingActionButtonLocation: widget.centerDocked ? FloatingActionButtonLocation.centerDocked : FloatingActionButtonLocation.endFloat,
+          floatingActionButtonLocation: widget.centerDocked
+              ? FloatingActionButtonLocation.centerDocked
+              : FloatingActionButtonLocation.endFloat,
           bottomNavigationBar: widget.showBottomNav ? myBottomBar() : null,
         ),
       ),

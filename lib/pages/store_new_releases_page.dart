@@ -9,19 +9,19 @@ import 'package:nintendo_fans/services/store/store_service.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class StoreAllPage extends StatefulWidget {
+class StoreNewReleasesPage extends StatefulWidget {
   final scaffoldKey;
   final storage = new FlutterSecureStorage();
   final StoreService service = StoreService(RestClient());
 
-  StoreAllPage(this.scaffoldKey);
+  StoreNewReleasesPage(this.scaffoldKey);
 
   @override
-  _StoreAllPageState createState() => _StoreAllPageState();
+  _StoreNewReleasesPageState createState() => _StoreNewReleasesPageState();
 }
 
-class _StoreAllPageState extends State<StoreAllPage>
-    with AutomaticKeepAliveClientMixin<StoreAllPage> {
+class _StoreNewReleasesPageState extends State<StoreNewReleasesPage>
+    with AutomaticKeepAliveClientMixin<StoreNewReleasesPage> {
   var list = List();
   var userID;
   Future<List<Game>> games;
@@ -29,7 +29,7 @@ class _StoreAllPageState extends State<StoreAllPage>
 
   @override
   void initState() {
-    games = productBloc.getGameList().then((res) {
+    games = productBloc.getNewReleasesList().then((res) {
       return res;
     });
     super.initState();
@@ -39,7 +39,7 @@ class _StoreAllPageState extends State<StoreAllPage>
     if (productBloc.meta == null) {
       return games = productBloc
           .moreProducts(
-              'http://phplaravel-175876-509694.cloudwaysapps.com/api/games?page=1')
+              'http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=1')
           .then((res) {
         return res;
       });
@@ -236,6 +236,9 @@ class _StoreAllPageState extends State<StoreAllPage>
       childAspectRatio: 0.888,
       padding: EdgeInsets.all(15.0),
       itemBuilder: _itemBuilder,
+      noItemsFoundBuilder: (context) {
+        return Text('No Items Found');
+      },
       pageFuture: (pageIndex) async {
         await Future.delayed(Duration(seconds: 0, milliseconds: 700));
         if (pageIndex == 0) {

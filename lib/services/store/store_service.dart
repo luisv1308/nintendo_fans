@@ -18,7 +18,8 @@ class StoreService extends NetworkService implements IStoreService {
 
   @override
   Future<NetworkServiceResponse<List<dynamic>>> allGames() async {
-    var result = await rest.getAsync<List<dynamic>>(_constants.baseUrl + 'recentGames?page=1');
+    var result =
+        await rest.getAsync<List<dynamic>>(_constants.baseUrl + 'games?page=1');
     if (result.mappedResult != null) {
       var res = result.mappedResult;
       meta = result.metaLinks;
@@ -29,11 +30,90 @@ class StoreService extends NetworkService implements IStoreService {
         success: result.networkServiceResponse.success,
       );
     }
-    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
+  }
+
+  @override
+  Future<NetworkServiceResponse<List<dynamic>>> newGames() async {
+    var result = await rest
+        .getAsync<List<dynamic>>(_constants.baseUrl + 'recentGames?page=1');
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
+  }
+
+  @override
+  Future<NetworkServiceResponse<List<dynamic>>> saleGames() async {
+    var result = await rest
+        .getAsync<List<dynamic>>(_constants.baseUrl + 'saleGames?page=1');
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
+  }
+
+  @override
+  Future<NetworkServiceResponse<List<dynamic>>> comingSoonGames() async {
+    var result = await rest
+        .getAsync<List<dynamic>>(_constants.baseUrl + 'comingSoonGames?page=1');
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
+  }
+
+  @override
+  Future<NetworkServiceResponse<List<dynamic>>> favourites() async {
+    var result = await rest
+        .getAsync<List<dynamic>>(_constants.baseUrl + 'favourites?page=1');
+    if (result.mappedResult != null) {
+      var res = result.mappedResult;
+      meta = result.metaLinks;
+
+      return new NetworkServiceResponse(
+        content: res,
+        meta: meta,
+        success: result.networkServiceResponse.success,
+      );
+    }
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
   }
 
   Future<NetworkServiceResponse<List<dynamic>>> fullGames() async {
-    var result = await rest.getAsync<List<dynamic>>(_constants.baseUrl + 'games');
+    var result =
+        await rest.getAsync<List<dynamic>>(_constants.baseUrl + 'games');
     if (result.mappedResult != null) {
       var res = result.mappedResult;
       meta = result.metaLinks;
@@ -44,7 +124,9 @@ class StoreService extends NetworkService implements IStoreService {
         success: result.networkServiceResponse.success,
       );
     }
-    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
   }
 
   Future<NetworkServiceResponse<List<dynamic>>> pageGames(url) async {
@@ -60,12 +142,16 @@ class StoreService extends NetworkService implements IStoreService {
         success: result.networkServiceResponse.success,
       );
     }
-    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
   }
 
-  Future<NetworkServiceResponse<Map<String, dynamic>>> userFavourite(String userId, String gameId) async {
+  Future<NetworkServiceResponse<Map<String, dynamic>>> userFavourite(
+      String userId, String gameId) async {
     Map data = {'user_id': userId, 'game_id': gameId};
-    var result = await rest.postAsync<List<dynamic>>(_constants.baseUrl + 'favourite-create', data);
+    var result = await rest.postAsync<List<dynamic>>(
+        _constants.baseUrl + 'favourite-create', data);
     if (result.mappedResult != null) {
       var res = result.mappedResult;
       meta = result.metaLinks;
@@ -75,12 +161,16 @@ class StoreService extends NetworkService implements IStoreService {
         success: result.networkServiceResponse.success,
       );
     }
-    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
   }
 
-  Future<NetworkServiceResponse<Map<String, dynamic>>> userDeleteFavourite(String userId, String gameId) async {
+  Future<NetworkServiceResponse<Map<String, dynamic>>> userDeleteFavourite(
+      String userId, String gameId) async {
     Map data = {'user_id': userId, 'game_id': gameId};
-    var result = await rest.deleteAsync<List<dynamic>>(_constants.baseUrl + 'favourite-delete', data);
+    var result = await rest.deleteAsync<List<dynamic>>(
+        _constants.baseUrl + 'favourite-delete', data);
     if (result.mappedResult != null) {
       var res = result.mappedResult;
       meta = result.metaLinks;
@@ -90,13 +180,21 @@ class StoreService extends NetworkService implements IStoreService {
         success: result.networkServiceResponse.success,
       );
     }
-    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
   }
 
-  Future<NetworkServiceResponse<Map<String, dynamic>>> userRating(String gameId, double rating) async {
+  Future<NetworkServiceResponse<Map<String, dynamic>>> userRating(
+      String gameId, double rating) async {
     this.userID = await storage.read(key: 'user_id');
-    Map data = {'user_id': this.userID, 'game_id': gameId, 'rating': rating.toString()};
-    var result = await rest.postAsync<List<dynamic>>(_constants.baseUrl + 'ratings-create', data);
+    Map data = {
+      'user_id': this.userID,
+      'game_id': gameId,
+      'rating': rating.toString()
+    };
+    var result = await rest.postAsync<List<dynamic>>(
+        _constants.baseUrl + 'ratings-create', data);
     if (result.mappedResult != null) {
       var res = result.mappedResult;
       meta = result.metaLinks;
@@ -106,6 +204,8 @@ class StoreService extends NetworkService implements IStoreService {
         success: result.networkServiceResponse.success,
       );
     }
-    return new NetworkServiceResponse(success: result.networkServiceResponse.success, message: result.networkServiceResponse.message);
+    return new NetworkServiceResponse(
+        success: result.networkServiceResponse.success,
+        message: result.networkServiceResponse.message);
   }
 }
