@@ -26,11 +26,15 @@ class StoreSearch extends SearchDelegate<Game> {
 
   Future<List<Game>> load() {
     if (productBloc.meta == null) {
-      return games = productBloc.moreProducts('http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=1').then((res) {
+      return games = productBloc
+          .moreProducts(
+              'http://phplaravel-175876-509694.cloudwaysapps.com/api/recentGames?page=1')
+          .then((res) {
         return res;
       });
     } else {
-      return games = productBloc.moreProducts(productBloc.meta['next']).then((res) {
+      return games =
+          productBloc.moreProducts(productBloc.meta['next']).then((res) {
         return res;
       });
     }
@@ -62,6 +66,18 @@ class StoreSearch extends SearchDelegate<Game> {
 
   @override
   Widget buildResults(BuildContext context) {
+    if (query.length == 0) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              "Search Games",
+            ),
+          )
+        ],
+      );
+    }
     if (query.length < 3) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +94,8 @@ class StoreSearch extends SearchDelegate<Game> {
     return PagewiseGridView.count(
       // key: new PageStorageKey('myListView'),
       pageSize: 40,
-      crossAxisCount: (MediaQuery.of(context).orientation == Orientation.portrait) ? 2 : 3,
+      crossAxisCount:
+          (MediaQuery.of(context).orientation == Orientation.portrait) ? 2 : 3,
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
       childAspectRatio: 0.888,
@@ -91,7 +108,7 @@ class StoreSearch extends SearchDelegate<Game> {
         await Future.delayed(Duration(seconds: 0, milliseconds: 700));
         if (pageIndex == 0) {
           Future<List<Game>> list2;
-          list2 = productBloc.getGameListQuery(query).then((res) {
+          list2 = productBloc.getGameListQuery(query.toLowerCase()).then((res) {
             return res;
           });
           return list2;
@@ -109,7 +126,12 @@ class StoreSearch extends SearchDelegate<Game> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-    return Column();
+    return Center(
+      child: new Text(
+        "Search Games",
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 
   @override
@@ -141,7 +163,7 @@ class StoreSearch extends SearchDelegate<Game> {
               children: <Widget>[
                 imageStack(entry.image),
                 descStack(entry),
-                ratingStack(4.00),
+                ratingStack(entry.rating),
               ],
             ),
           ),
@@ -176,7 +198,13 @@ class StoreSearch extends SearchDelegate<Game> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                product.eshopPrice.toString() != "0" ? Text("\$ ${product.eshopPrice.toString()}", style: TextStyle(color: Colors.yellow, fontSize: 18.0, fontWeight: FontWeight.bold)) : Text("N/A")
+                product.eshopPrice.toString() != "0"
+                    ? Text("\$ ${product.eshopPrice.toString()}",
+                        style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold))
+                    : Text("N/A")
               ],
             ),
           ),
@@ -184,12 +212,16 @@ class StoreSearch extends SearchDelegate<Game> {
       );
 
   //stack3
-  Widget ratingStack(double rating) => Positioned(
+  Widget ratingStack(String rating) => Positioned(
         top: 0.0,
         left: 0.0,
         child: Container(
           padding: EdgeInsets.all(4.0),
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.9), borderRadius: BorderRadius.only(topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0))),
+          decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.9),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0))),
           child: Row(
             children: <Widget>[
               Icon(
@@ -201,7 +233,7 @@ class StoreSearch extends SearchDelegate<Game> {
                 width: 2.0,
               ),
               Text(
-                rating.toString(),
+                rating,
                 style: TextStyle(color: Colors.white, fontSize: 10.0),
               )
             ],
@@ -214,7 +246,11 @@ class StoreSearch extends SearchDelegate<Game> {
         right: 0.0,
         child: Container(
           padding: EdgeInsets.all(4.0),
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.9), borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0))),
+          decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.9),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(10.0))),
           child: Row(
             children: <Widget>[
               Icon(
@@ -241,7 +277,8 @@ class StoreSearch extends SearchDelegate<Game> {
   void saveFavourite(Game game, int index) async {
     this.userID = await this.storage.read(key: 'user_id');
     this.service.userFavourite(this.userID, game.id.toString()).then((res) {
-      this.showSnackBar("You are now following " + game.title + "!", game, index);
+      this.showSnackBar(
+          "You are now following " + game.title + "!", game, index);
       // setState(() {
       game.favourite = true;
       // });
@@ -250,9 +287,13 @@ class StoreSearch extends SearchDelegate<Game> {
 
   void deleteFavourite(Game game, int index) async {
     this.userID = await this.storage.read(key: 'user_id');
-    this.service.userDeleteFavourite(this.userID, game.id.toString()).then((res) {
+    this
+        .service
+        .userDeleteFavourite(this.userID, game.id.toString())
+        .then((res) {
       print(res.message);
-      this.showSnackBar("You are not more  following " + game.title + "!", game, index);
+      this.showSnackBar(
+          "You are not more  following " + game.title + "!", game, index);
       // setState(() {
       game.favourite = false;
       // });
@@ -274,4 +315,7 @@ class StoreSearch extends SearchDelegate<Game> {
     //   // ),
     // ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

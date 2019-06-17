@@ -42,12 +42,18 @@ void main() async {
       title: UIData.appName,
       theme: ThemeData(
         // canvasColor: Colors.red[800],
-        buttonTheme: new ButtonThemeData(buttonColor: Colors.orangeAccent, textTheme: ButtonTextTheme.primary),
-        primaryColor: Colors.orangeAccent,
+        buttonTheme: new ButtonThemeData(
+            buttonColor: Colors.orangeAccent,
+            textTheme: ButtonTextTheme.primary),
+        primaryColor: Colors.orange[800],
         brightness: Brightness.light,
         fontFamily: UIData.quickFont,
         primarySwatch: Colors.red,
-        textTheme: new TextTheme(body1: new TextStyle(color: Colors.orange[800]), headline: TextStyle(color: Colors.white), title: TextStyle(color: Colors.white)),
+
+        textTheme: new TextTheme(
+            body1: new TextStyle(color: Colors.black),
+            headline: TextStyle(color: Colors.white),
+            title: TextStyle(color: Colors.white)),
       ),
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
@@ -69,7 +75,8 @@ void main() async {
         UIData.homeRoute: (BuildContext context) => HomePage(),
         UIData.newsRoute: (BuildContext context) => NewsPage(),
         UIData.storeRoute: (BuildContext context) => StorePage(),
-        UIData.storeDetailsRoute: (BuildContext context) => new StoreDetailsPage(),
+        UIData.storeDetailsRoute: (BuildContext context) =>
+            new StoreDetailsPage(),
       },
       onUnknownRoute: (RouteSettings rs) => new MaterialPageRoute(
           builder: (context) => new NotFoundPage(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:nintendo_fans/logic/viewmodel/post_view_model.dart';
 import 'package:nintendo_fans/model/news.dart';
 import 'package:nintendo_fans/model/post.dart';
@@ -29,7 +30,8 @@ class PostBloc {
         news.title = item.findElements('title').single.text;
         news.pubDate = item.findElements('pubDate').single.text;
         news.link = item.findElements('link').single.text;
-        news.thumbnail = item.findElements('media:thumbnail').single.attributes[0].value;
+        news.thumbnail =
+            item.findElements('media:thumbnail').single.attributes[0].value;
         // print(thumb.attributes[0].value);
         // news.thumbnail = '';
         // thumb.map((node) {

@@ -240,6 +240,9 @@ class _StoreFvaouritesPageState extends State<StoreFvaouritesPage>
       noItemsFoundBuilder: (context) {
         return Text('No Items Found');
       },
+      retryBuilder: (context, callback) {
+        return RaisedButton(child: Text('Retry'), onPressed: () => callback());
+      },
       pageFuture: (pageIndex) async {
         await Future.delayed(Duration(seconds: 0, milliseconds: 700));
         if (pageIndex == 0) {
@@ -257,5 +260,5 @@ class _StoreFvaouritesPageState extends State<StoreFvaouritesPage>
 
   // TODO: implement wantKeepAlive
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 }

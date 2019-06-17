@@ -152,11 +152,13 @@ class _MyCommonScaffoldState extends State<CommonScaffoldMutable> {
                   child: TabBar(
                     isScrollable: true,
                     tabs: [
-                      Text("All"),
-                      Text("New Releases"),
-                      Text("Sales"),
-                      Text("Coming Soon"),
-                      Text("Favourites"),
+                      Text("All", style: TextStyle(color: Colors.black)),
+                      Text("New Releases",
+                          style: TextStyle(color: Colors.black)),
+                      Text("Sales", style: TextStyle(color: Colors.black)),
+                      Text("Coming Soon",
+                          style: TextStyle(color: Colors.black)),
+                      Text("Favourites", style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ),

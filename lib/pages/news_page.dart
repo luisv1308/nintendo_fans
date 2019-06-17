@@ -7,7 +7,7 @@ import 'package:nintendo_fans/widgets/common_divider.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
 import 'package:nintendo_fans/widgets/label_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class NewsPage extends StatelessWidget {
   //column1
@@ -26,14 +26,18 @@ class NewsPage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '',
-                  style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 700),
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .apply(fontWeightDelta: 700),
                 ),
                 SizedBox(
                   height: 5.0,
                 ),
                 Text(
                   '',
-                  style: Theme.of(context).textTheme.caption.apply(fontFamily: UIData.ralewayFont, color: Colors.pink),
+                  style: Theme.of(context).textTheme.caption.apply(
+                      fontFamily: UIData.ralewayFont, color: Colors.pink),
                 )
               ],
             ),
@@ -78,7 +82,12 @@ class NewsPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
-            child: Text(news.title, style: TextStyle(fontWeight: FontWeight.normal, fontFamily: UIData.ralewayFont, fontSize: 20.0, color: Colors.black)),
+            child: Text(news.title,
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontFamily: UIData.ralewayFont,
+                    fontSize: 20.0,
+                    color: Colors.black)),
           ),
           CommonDivider(),
           InkWell(
@@ -92,7 +101,16 @@ class NewsPage extends StatelessWidget {
             // },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new HtmlView(data: news.description),
+              child: new Html(
+                data: news.description,
+                onLinkTap: (url) async {
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+              ),
               // child: Text(
               //   news.description,
               //   style: TextStyle(fontWeight: FontWeight.normal, fontFamily: UIData.ralewayFont),
@@ -133,7 +151,8 @@ class NewsPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "All Posts",
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w700),
                   ),
                   Icon(Icons.arrow_drop_down)
                 ],

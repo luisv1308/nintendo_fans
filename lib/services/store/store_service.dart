@@ -113,7 +113,7 @@ class StoreService extends NetworkService implements IStoreService {
 
   Future<NetworkServiceResponse<List<dynamic>>> fullGames() async {
     var result =
-        await rest.getAsync<List<dynamic>>(_constants.baseUrl + 'games');
+        await rest.getAsync<List<dynamic>>(_constants.baseUrl + 'fullGames');
     if (result.mappedResult != null) {
       var res = result.mappedResult;
       meta = result.metaLinks;
