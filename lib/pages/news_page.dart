@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nintendo_fans/logic/block/post_block.dart';
 import 'package:nintendo_fans/model/news.dart';
@@ -6,10 +7,27 @@ import 'package:nintendo_fans/utils/uidata.dart';
 import 'package:nintendo_fans/widgets/common_divider.dart';
 import 'package:nintendo_fans/widgets/common_drawer.dart';
 import 'package:nintendo_fans/widgets/label_icon.dart';
+import 'package:nintendo_fans/widgets/popup_menu.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class NewsPage extends StatelessWidget {
+  Choice _selectedChoice = choices[0];
+  final storage = new FlutterSecureStorage();
+  BuildContext context;
+
+  Future _select(Choice choice) async {
+    if (choice.title == 'Logout') {
+      await storage.deleteAll();
+      Navigator.of(this.context)
+          .pushNamedAndRemoveUntil('/Login', (Route<dynamic> route) => false);
+    }
+    // Causes the app to rebuild with the new _selectedChoice.
+    // setState(() {
+    _selectedChoice = choice;
+    // });
+  }
+
   //column1
   Widget profileColumn(BuildContext context, News news) => Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -161,13 +179,29 @@ class NewsPage extends StatelessWidget {
           )));
 
   Widget appBar() => SliverAppBar(
+        elevation: 4.0,
         backgroundColor: Colors.orange[800],
-        // textTheme: TextTheme(title: TextStyle(fontSize: 24.00, color: Colors.white)),
-        elevation: 2.0,
-        title: Text("Feed", style: TextStyle(color: Colors.white)),
-        forceElevated: true,
-        pinned: true,
-        floating: false,
+        title: Text("News Feed"),
+        actions: <Widget>[
+          SizedBox(
+            width: 5.0,
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(null),
+          ),
+          PopupMenuButton<Choice>(
+            onSelected: _select,
+            itemBuilder: (BuildContext context) {
+              return choices.skip(0).map((Choice choice) {
+                return PopupMenuItem<Choice>(
+                  value: choice,
+                  child: Text(choice.title),
+                );
+              }).toList();
+            },
+          ),
+        ],
         // bottom: bottomBar(),
       );
 
@@ -199,6 +233,8 @@ class NewsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
+
     return Scaffold(
       drawer: CommonDrawer(),
       body: bodySliverList(),

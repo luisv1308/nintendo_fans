@@ -82,7 +82,8 @@ class HomePage extends StatelessWidget {
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: false,
           background: Container(
-            decoration: BoxDecoration(gradient: LinearGradient(colors: UIData.kitGradients)),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: UIData.kitGradients)),
           ),
           title: Row(
             children: <Widget>[
@@ -105,7 +106,10 @@ class HomePage extends StatelessWidget {
   //bodygrid
   Widget bodyGrid(List<Menu> menu) => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: MediaQuery.of(_context).orientation == Orientation.portrait ? 2 : 3,
+          crossAxisCount:
+              MediaQuery.of(_context).orientation == Orientation.portrait
+                  ? 2
+                  : 3,
           mainAxisSpacing: 0.0,
           crossAxisSpacing: 0.0,
           childAspectRatio: 1.0,
@@ -139,7 +143,8 @@ class HomePage extends StatelessWidget {
   }
 
   Widget header() => Ink(
-        decoration: BoxDecoration(gradient: LinearGradient(colors: UIData.kitGradients2)),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: UIData.kitGradients2)),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(

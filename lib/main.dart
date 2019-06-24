@@ -5,6 +5,8 @@ import 'package:nintendo_fans/pages/home_page.dart';
 import 'package:nintendo_fans/pages/login_page.dart';
 import 'package:nintendo_fans/pages/news_page.dart';
 import 'package:nintendo_fans/pages/notfound_page.dart';
+import 'package:nintendo_fans/pages/profile_page.dart';
+import 'package:nintendo_fans/pages/settings_page.dart';
 import 'package:nintendo_fans/pages/store_details_page.dart';
 import 'package:nintendo_fans/pages/store_page.dart';
 import 'package:nintendo_fans/services/login/login_service.dart';
@@ -73,8 +75,10 @@ void main() async {
       routes: <String, WidgetBuilder>{
         UIData.loginOneRoute: (BuildContext context) => LoginPage(),
         UIData.homeRoute: (BuildContext context) => HomePage(),
+        UIData.profile: (BuildContext context) => ProfilePage(),
         UIData.newsRoute: (BuildContext context) => NewsPage(),
         UIData.storeRoute: (BuildContext context) => StorePage(),
+        UIData.settings: (BuildContext context) => SettingsPage(),
         UIData.storeDetailsRoute: (BuildContext context) =>
             new StoreDetailsPage(),
       },

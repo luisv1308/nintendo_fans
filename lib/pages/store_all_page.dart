@@ -201,7 +201,7 @@ class _StoreAllPageState extends State<StoreAllPage>
         .then((res) {
       print(res.message);
       this.showSnackBar(
-          "You are not more  following " + game.title + "!", game, index);
+          "You are not more following " + game.title + "!", game, index);
       setState(() {
         game.favourite = false;
       });
